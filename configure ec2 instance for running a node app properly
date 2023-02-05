@@ -1,0 +1,78 @@
+firts make a instace
+second connect instace by terminal -> got to connect option -> slelect ssh option -> copy code -> paste in yor terminal -> type yes -> boom you connected
+
+1 {------- now your are instace terminal ----
+now install nvm first in this instace
+----->  curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -                      
+use this cmd and make sure paste change your node version according to you
+Now install nodejs in your instance
+------>  sudo apt-get install -y nodejs
+now look which version of node and npm have you installed
+------->node --version && npm --version
+}
+
+2 {
+now you have to install git in your iunstace so that you can copy repo of your app from github
+------> sudo apt-get install git
+now use (ls) cmd too see how many you already have in your instace bydeafult there is no file instance is empty
+------->git clone "url of your repo from github"
+after clone repo go inside it.
+------> cd (your folder name)
+------> ls
+now you can see your all files
+
+now install node module so you can run your app 
+------> npm i 
+after that make .env file by 
+--------> touch .env
+now you can not see your .env file becasue in linux .file is private so use
+--------> ls -a
+now you can see your file then
+-------->vi .env
+now you are in vi editor so for changing anything(adding eviroment var) in that file hit (i)
+now you can edit this file, after edit this file
+---------> hit esc btn then,hit :wq
+this save your code and quit the editor
+now simply run this app by npm run start cmd 
+}
+
+
+3{
+now we have to install pm2 (inside our express api folder) because it work like nodemon and it's very use full
+-----------> sudo npm i pm2 -g
+to start pm2 
+-----------> pm2 start (your main file name like index or app).js
+now your app is runnnig you can see that it show a little dashboard in which it write online
+}
+------------  ager ap load balancer ka use kr rhe hai to ngix ka use mat kro because laod balancer work like ngix so don't follow 4th step in ec2 instance;------
+4 {
+now we have to install ngix beacuse we want a reverse proxy which bring user to our app(port)
+---------> sudo apt install nginx
+now nginx install, now we have to make a folder in which ngix run 
+--------->sudo vi /etc/nginx/sites-available/nodeApp
+by default ngix run own app on public port so we have to config the file little bit
+code hai ye nichhe isse copy kro nodeapp folder ke vi editor me hit i and ctrl+p,
+server{
+  server_name 165.232.177.116(iss ip ki jaga apne instace in public ip likho yaha);
+
+      location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+
+now pane config kr diya file now run ngix
+-------->sudo ln -s /etc/nginx/sites-available/nodeApp /etc/nginx/sites-enabled
+
+that it now visit instacec ip, ager yaha abhi bhi ngix ru ho raha hai to cody with harry ki node js production deply videeo ka end part watch rkeee
+
+
+
+ 
+}
+
