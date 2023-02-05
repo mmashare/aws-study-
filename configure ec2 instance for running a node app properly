@@ -3,7 +3,7 @@ second connect instace by terminal -> got to connect option -> slelect ssh optio
 
 1 {------- now your are instace terminal ----
 now install nvm first in this instace
------>  curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -                      
+----->  curl -sL https://deb.nodesource.com/setup_{version of your node like 14 or 15 or 16}.x | sudo -E bash -                      
 use this cmd and make sure paste change your node version according to you
 Now install nodejs in your instance
 ------>  sudo apt-get install -y nodejs
