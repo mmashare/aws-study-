@@ -1,0 +1,39 @@
+[[[[[[[[[  create infrastructer of security group,ec2,target group,loadbalancer ]]]]]]]]]]]]
+
+how things works in this arch - we crete a security group in which we open port of (ec2 http:3000) and load balancer(http:30), so when you create target group pls notice that app ki ebsite ec2 ke ander same port pr run ho rahi hogi like on http:3000 and salect same port in target group load balancer ka port mat select krna target group me, becasue load balancer ka port ham security group use karege useme define hoga http:80.
+
+1 - first make a custom (security group)
+2 - then make your (all instance) with adding that custom maded security group(run node app by my config app)
+3 - make a (target group) in which  you include all your running instace and make sure when you add your instance port would be the same.
+4 - then make a (load balancer) and add the target group in which you add your all instance,here you can set your port of your load balancer as you want(80).  
+
+
+you have to watch two videos
+first - https://www.youtube.com/watch?v=thgwe6SExWE&list=PLYqPF2S6ISEk0DqwrKkHy7r-FQcbyWpEK&index=24&t=609s
+ 
+sec -https://www.youtube.com/watch?v=WqL2NZmo4FY&list=WL&index=347&t=922s 
+
+, and also for confiure the ec2 instance for node enviroment use our config step(in notepad file)
+
+
+[[[[[[[[[[[[[[[[[[[ now add (domain name) and (ssl certificate) to your load balancer  ]]]]]]]]]]]]]]]]]]]
+
+watch this video - https://www.youtube.com/watch?v=YoDBF2VImp8&ab_channel=PCAide
+------------- or rad these stuff becasilly iss video ka pura content mene yaha likha hai so koi bhi chij deklo ya video ya ye niche vali document ---------------
+
+1 - buy a domain name  from godaddy.com
+ step -1 ----> as you know aws acm service generate free ssl certificate that you can add to your load balancer,go to acm tab and follow these step.
+			apko amc ke ander jana hai and jo domain buy kara hai vo type karna hai acm ,then hit dns validation ,then your aws give to 
+                        [name],[type(CNAME)],[value] then put these three thing in godaddy website,after put these things 5 min wait refresh acm dashboard and when the                         status becomes issued (boom your certifficate has registered)
+ 
+step -2 ----> now because we buy our domain name from godaddy.com so we don't route53 in aws, just copy the load balancer dns name url and then go to godaddy then add one column of CNAME ex - [Type(CNAME)] [HOST(www)] [PointTo(dns url of load balaner)] then hit save btn and done.
+
+step 3 -----> now our load balancer on ssl(HTTPS) and on Custom Domain, so we have to change some things, so go to (load blancer) dashboard and go to (listner) section
+here you have defaultly on http:80 (forward to) some target group, now add another listner here (https:443) (forward to) same target group.now one thing become wrong and that is your website now run on both http with without ssl and https with ssl. so now what we do is if user go our website by this domain (http//domainname.com) he will automatically redirect to our https//domainname.com, now you have added (https) lister to your website now go (http) listner that you already have added now change it property to (forward to redirect) to same target group 
+ 
+
+
+--------------------- and don't be confuse ki hamne load balancer par domain and https add kr diya too ec2 to http par run ho raha hai ussme apko koi change nhi karna vo sab same rahne dena under the hood ec2 http:3000 par hi run ho rahe hai vo safe hai ------------------------- 
+
+
+------------------ because apne load balacner ki ip ki jagah domain set kr diya hai to frontned par jo axios me req send hogi usse .env me backend ki ip hatake domain laga dena. yadd se  ------------------------------------
